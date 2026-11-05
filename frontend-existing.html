@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flow Industries – Customer Finder</title>
+<style>
+:root{--bg:#F4F7FB;--sf:#fff;--rs:#F8FAFD;--tx:#13233B;--t2:#607086;--ac:#0878E8;--ac2:#6B42E8;--ok:#159B70;--wa:#E69A35;--er:#D94C61;--bd:#E1E8F0;--gl:none;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=dark]{color-scheme:dark;--bg:#050D1B;--sf:#09172B;--rs:#0D2039;--tx:#EAF4FF;--t2:#91A9C6;--ac:#00A9FF;--ac2:#7A5CFF;--ok:#18D6A0;--wa:#FFC247;--er:#FF5D78;--bd:#17375A;--gl:0 0 14px rgba(0,169,255,.35)}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:14px/1.45 Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--sf);border-radius:8px;padding:7px 12px;min-height:34px}
+button:hover{border-color:var(--ac)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.pr{background:var(--ac);color:#fff;border-color:var(--ac)}[data-theme=dark] .pr{box-shadow:var(--gl);color:#001}
+input,select,textarea{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:7px 10px;min-height:34px}
+textarea{width:100%;min-height:90px}
+#app{display:grid;grid-template-columns:220px 1fr;height:100%}
+aside{background:var(--sf);border-right:1px solid var(--bd);padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow:auto}
+.logo{display:flex;gap:10px;align-items:center;padding:4px 8px 16px}.logo b{display:block;font-size:15px}.logo small,.mut{color:var(--t2);font-size:12px}
+.lg{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;display:grid;place-items:center;font-weight:700}
+nav button{width:100%;text-align:left;border:0;background:none;display:flex;gap:10px;align-items:center;padding:9px 10px;color:var(--t2)}
+nav button[aria-current=page]{background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac);font-weight:600}
+[data-theme=dark] nav button[aria-current=page]{box-shadow:var(--gl)}
+.bdg{margin-left:auto;background:var(--er);color:#fff;border-radius:10px;font-size:11px;padding:0 6px}
+.slog{margin-top:auto;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:12px;color:var(--t2)}
+.main{display:flex;flex-direction:column;min-width:0;height:100%}
+header{display:flex;gap:8px;align-items:center;padding:12px 20px;flex-wrap:wrap;background:var(--sf);border-bottom:1px solid var(--bd)}
+header .sr{flex:1;min-width:160px;max-width:380px}
+#menu{display:none}
+.ct{flex:1;overflow:auto;padding:16px 20px;min-height:0}
+.split{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:16px;align-items:start}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.cards .v{font-size:24px;font-weight:700}
+.tb{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin:12px 0}.tb label{display:flex;flex-direction:column;font-size:12px;color:var(--t2)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.chip{border-radius:12px;padding:2px 10px;font-size:12px;background:var(--rs);border:1px solid var(--bd)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+th{font-size:12px;color:var(--t2);text-align:left;font-weight:500;padding:8px}td{padding:8px;border-top:1px solid var(--bd)}
+tr.row{cursor:pointer}tr.row:hover,tr.sel{background:var(--rs)}tr.sel{outline:1px solid var(--ac)}
+.av{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-weight:600;font-size:12px;margin-right:8px;vertical-align:middle}
+.tag{border-radius:6px;padding:1px 8px;font-size:12px;background:color-mix(in srgb,var(--ac2) 14%,transparent);color:var(--ac2);white-space:nowrap}
+.sc{border-radius:6px;padding:1px 8px;font-weight:600;font-size:12px}
+.hi{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}.md{background:color-mix(in srgb,var(--wa) 20%,transparent);color:var(--wa)}.lo{background:color-mix(in srgb,var(--er) 16%,transparent);color:var(--er)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}.grid .card{cursor:pointer}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--bd);margin:12px 0}.tabs button{border:0;border-radius:0;background:none;color:var(--t2)}.tabs [aria-selected=true]{color:var(--ac);border-bottom:2px solid var(--ac);font-weight:600}
+.dm{display:inline-block;background:var(--wa);color:#000;font-size:11px;font-weight:700;border-radius:4px;padding:0 6px;margin-left:6px}
+.note{background:var(--rs);border-radius:8px;padding:8px;margin:6px 0}
+.why{background:color-mix(in srgb,var(--ac) 10%,transparent);border-radius:8px;padding:10px;margin:10px 0}
+.warn{border:1px solid var(--wa);background:color-mix(in srgb,var(--wa) 12%,transparent);border-radius:8px;padding:10px;margin:8px 0}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px;padding:6px 0;border-top:1px solid var(--bd)}
+.qa{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+#toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:8px 14px;border-radius:8px;display:none;z-index:50}
+dialog{background:var(--sf);color:var(--tx);border:1px solid var(--bd);border-radius:12px;max-width:520px;width:92%}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+.pg{display:flex;gap:6px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap}
+@media(max-width:1100px){.split{grid-template-columns:1fr}#det{position:fixed;inset:0;z-index:30;overflow:auto;border-radius:0;padding-top:calc(14px + env(safe-area-inset-top,0px))}#det.empty{display:none}}
+@media(min-width:1101px){#back{display:none}}
+@media(max-width:820px){#app{grid-template-columns:1fr}aside{position:fixed;inset:0 auto 0 0;width:240px;z-index:40;transform:translateX(-100%);transition:transform .2s}aside.open{transform:none}#menu{display:inline-block}.cards{grid-template-columns:1fr}.ct{padding:12px}header{padding:10px 12px}thead{display:none}tr.row td:nth-child(n+4):not(:nth-child(7)){display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div id="app">
+<aside id="side" aria-label="Sidebar"><div class="logo"><div class="lg">F</div><div><b>Flow Industries</b><small>Build · Grow · Together</small></div></div>
+<nav id="nav" aria-label="Main"></nav>
+<div class="slog">Better customers.<br>Bigger dreams.</div><small class="mut" style="padding:8px">Flow Industries v1.0</small></aside>
+<div class="main">
+<header>
+<button id="menu" aria-label="Open menu">☰</button>
+<input class="sr" id="gs" type="search" placeholder="Search by name, area, business type…" aria-label="Global search (loaded results and saved leads)">
+<select id="loc" aria-label="Location"><option>Surat, Gujarat</option><option>Ahmedabad, Gujarat</option><option>Vadodara, Gujarat</option><option>Mumbai, Maharashtra</option></select>
+<select id="cat" aria-label="Business category"><option>Restaurants &amp; Cafés</option><option>Retail</option><option>Grocery</option><option>Salon/Beauty</option><option>Education</option><option>Healthcare</option><option>Professional Services</option><option>Other</option></select>
+<span style="flex:1"></span>
+<button id="th" aria-label="Toggle theme">◐</button>
+<button id="bell" aria-label="Notifications">🔔︎ <span class="bdg" id="nc">1</span></button>
+<button id="prof" aria-label="Profile menu">FI Flow Industries ▾</button>
+</header>
+<div class="ct" id="ct" tabindex="-1"></div>
+</div></div>
+<div id="toast" role="status"></div>
+<dialog id="dlg"></dialog>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ST=['New','Contacted','Reviewed','Draft Ready','Interested','Not Interested','Follow-up Due','Converted','Archived'];
+const COL=['#6B42E8','#0EA5E9','#F97316','#EC4899','#3B82F6','#6366F1','#EF4444','#22C55E','#06B6D4','#8B5CF6'];
+// DEMO DATA ONLY – fictional records, never live discovery results
+const D=[['Piyush’s Café','Adajan','Café',1500,92,'New'],['Royal Spice','Surat','Restaurant',2000,88,'Contacted'],['Spice Hub','Vesu','Restaurant',1000,82,'New'],['The Brown Cup','Palsana','Café',2500,76,'Draft Ready'],['Urban Bites','Varachha','Restaurant',1800,71,'New'],['Tandoor House','Katargam','Restaurant',2200,68,'New'],['Royal Restaurant','Athwa','Restaurant',1200,61,'Reviewed'],['The Food Lounge','Athwa','Café',2800,55,'Contacted'],['Karan’s Pizza','Udhna','Restaurant',1500,48,'New'],['Meera Café','Bhimrad','Café',2000,42,'Not Interested']];
+let L=D.map((r,i)=>({id:'demo-'+i,name:r[0],area:r[1],type:r[2],budget:r[3],score:r[4],status:r[5],web:i%3?'Not Checked':'Not Found in Checked Source',conf:60+i*2,saved:true,notes:[],hist:[{t:'Demo record loaded',w:'system'}],corr:{}}));
+let S={page:'finder',sel:null,pg:1,ps:10,sort:'score-d',st:'All',q:'',view:'list',f:{minScore:0,maxBudget:0,web:''},tab:'Details',msgs:[],bulk:new Set(),demo:true,pref:'light'};
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',2600)}
+function applyTheme(){let p=S.pref,r=p==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;document.documentElement.dataset.theme=r}
+try{S.pref=localStorage.getItem('cf-theme')||'light'}catch(e){}applyTheme();
+function setPref(p){S.pref=p;try{localStorage.setItem('cf-theme',p)}catch(e){}applyTheme()}
+$('#th').onclick=()=>{setPref(document.documentElement.dataset.theme==='dark'?'light':'dark');if(S.page==='settings')render()};
+const sc=n=>n==null?'<span class="mut">Unscored</span>':`<span class="sc ${n>=75?'hi':n>=55?'md':'lo'}" title="AI research score (estimate)">${n}</span>`;
+const inr=n=>n?'₹'+n.toLocaleString('en-IN'):'Not Estimated';
+function view(){let q=(S.q||$('#gs').value).toLowerCase();let a=L.filter(l=>(S.page==='leads'?l.saved:true)&&(S.st==='All'||l.status===S.st)&&(!q||(l.name+l.area).toLowerCase().includes(q))&&l.score>=S.f.minScore&&(!S.f.maxBudget||l.budget<=S.f.maxBudget)&&(!S.f.web||l.web===S.f.web));
+const o={'score-d':(x,y)=>y.score-x.score,'score-a':(x,y)=>x.score-y.score,'rel':()=>0,'recent':(x,y)=>L.indexOf(y)-L.indexOf(x),'b-d':(x,y)=>y.budget-x.budget,'b-a':(x,y)=>x.budget-y.budget,'az':(x,y)=>x.name.localeCompare(y.name)};return a.sort(o[S.sort])}
+function nav(){const P=[['dashboard','Dashboard'],['finder','Customer Finder'],['leads','My Leads'],['messages','Messages'],['settings','Settings']];$('#nav').innerHTML=P.map(([k,n])=>`<button data-p="${k}" ${S.page===k?'aria-current="page"':''}>${n}${k==='messages'?`<span class="bdg">${S.msgs.length}</span>`:''}</button>`).join('');
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{S.page=b.dataset.p;S.pg=1;$('#side').classList.remove('open');render()})}
+function chips(){const c=[];if(S.st!=='All')c.push(['st','Status: '+S.st]);if(S.f.minScore)c.push(['minScore','Score ≥ '+S.f.minScore]);if(S.f.maxBudget)c.push(['maxBudget','Budget ≤ '+inr(S.f.maxBudget)]);if(S.f.web)c.push(['web','Website: '+S.f.web]);
+return c.length?`<div class="chips">${c.map(([k,t])=>`<span class="chip">${esc(t)} <button data-rm="${k}" aria-label="Remove filter" style="border:0;padding:0 4px;min-height:0">×</button></span>`).join('')}<button id="clr">Clear all</button></div>`:''}
+function finder(){const a=view(),tot=a.length,pages=Math.max(1,Math.ceil(tot/S.ps));S.pg=Math.min(S.pg,pages);const p=a.slice((S.pg-1)*S.ps,S.pg*S.ps);
+const sum=a.reduce((s,l)=>s+(l.budget||0),0),miss=a.filter(l=>!l.budget).length,hp=a.filter(l=>l.score>=75).length;
+const rows=p.map((l,i)=>`<tr class="row ${S.sel===l.id?'sel':''}" data-id="${l.id}" tabindex="0"><td>${(S.pg-1)*S.ps+i+1}</td><td><span class="av" style="background:${COL[L.indexOf(l)%10]}">${esc(l.name[0])}</span>${esc(l.name)}</td><td>${esc(l.area)}</td><td><span class="tag">${l.type}</span></td><td>${inr(l.budget)}</td><td>${sc(l.score)}</td><td>${l.status}</td><td><button data-v="${l.id}">View</button></td></tr>`).join('');
+const cards=p.map(l=>`<div class="card" data-id="${l.id}" tabindex="0"><b>${esc(l.name)}</b><div class="mut">${esc(l.area)} · ${l.type}</div><div>${sc(l.score)} · ${l.status}</div><div>${inr(l.budget)}</div></div>`).join('');
+return `<div class="cards"><div class="card"><span class="mut">Total Customers</span><div class="v">${tot}</div><small class="mut">${S.demo?'DEMO dataset · current view':'current search'}</small></div>
+<div class="card"><span class="mut">Total Estimated Budget</span><div class="v">${inr(sum)}</div><small class="mut">approx.${miss?` · ${miss} without estimate`:''}</small></div>
+<div class="card"><span class="mut">High Priority Leads</span><div class="v">${hp}</div><small class="mut">${tot?Math.round(hp/tot*100):0}% of total · threshold: score ≥ 75</small></div></div>
+<div class="split"><div class="card"><div class="tb"><label>Sort by<select id="sort">${[['score-d','Highest Score'],['score-a','Lowest Score'],['rel','Relevance'],['recent','Recently Added'],['b-d','Budget High-to-Low'],['b-a','Budget Low-to-High'],['az','Business Name A–Z']].map(([v,t])=>`<option value="${v}" ${S.sort===v?'selected':''}>${t}</option>`).join('')}</select></label>
+<label>Status<select id="stf">${['All',...ST].map(s=>`<option ${S.st===s?'selected':''}>${s==='All'?'All':s}</option>`).join('')}</select></label>
+<label>Search<input id="q" value="${esc(S.q)}" placeholder="Name or area"></label><button id="af">+ Add Filter</button><button class="pr" id="fm">Find More Customers</button></div>
+${chips()}<div style="display:flex;justify-content:space-between;align-items:center"><div><b>Available Customers (${tot})</b><span class="dm">DEMO DATA</span><div class="mut">${esc($('#cat').value)} · ${esc($('#loc').value)}</div></div><div><button id="vl" aria-pressed="${S.view==='list'}">List</button> <button id="vg" aria-pressed="${S.view==='grid'}">Grid</button></div></div>
+${!tot?'<p>No customers match. Clear filters or broaden the search.</p>':S.view==='list'?`<div class="tw"><table><thead><tr><th>#</th><th>Name</th><th>Area</th><th>Type</th><th>Budget (Est.)</th><th>Score</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="grid">${cards}</div>`}
+<div class="pg"><span class="mut">Showing ${tot?(S.pg-1)*S.ps+1:0}–${Math.min(S.pg*S.ps,tot)} of ${tot}</span><span><select id="ps" aria-label="Page size">${[10,25,50].map(n=>`<option ${S.ps===n?'selected':''}>${n}</option>`).join('')}</select> <button id="pv" ${S.pg<=1?'disabled':''}>‹</button> Page ${S.pg}/${pages} <button id="nx" ${S.pg>=pages?'disabled':''}>›</button></span></div></div>
+<div class="card ${S.sel?'':'empty'}" id="det">${detail()}</div></div>`}
+function detail(){const l=L.find(x=>x.id===S.sel);if(!l)return '<p class="mut">Select a business to see details.</p>';
+const tabs=['Details','Demands','Notes','History'];
+let body='';
+if(S.tab==='Details')body=`<div class="kv"><span class="mut">Category</span><span>${l.type} <small class="mut">(demo)</small></span></div><div class="kv"><span class="mut">Area</span><span>${esc(l.corr.area||l.area)} <small class="mut">${l.corr.area?'team correction':'demo'}</small></span></div><div class="kv"><span class="mut">Phone</span><span>Not Available</span></div><div class="kv"><span class="mut">Website</span><span>${l.web}</span></div><div class="kv"><span class="mut">Address</span><span>Not Available</span></div><div class="kv"><span class="mut">Map</span><span>No valid coordinates</span></div><div class="kv"><span class="mut">Source</span><span>DEMO DATA – not a real business</span></div><button id="edit">Edit area (team correction)</button>`;
+if(S.tab==='Demands')body=`<h4>Customer Confirmed</h4><p class="mut">None recorded.</p><h4>AI Inferred <span class="tag">Unverified</span></h4><ul><li>Online menu / ordering may be relevant (confidence: low)</li><li>Google Maps link and enquiry form could help discovery</li></ul><div class="why"><b>Why they might need it</b><br>Potential opportunity: website state is “${l.web}” — not proof that none exists. The business has not said it needs a website.</div><p class="mut">Budget (Unverified Estimate): ${inr(l.budget)} — based on configurable Starter ₹999 / Business ₹2,499 / Premium ₹4,999+ bands (confirm prices in Settings).</p>`;
+if(S.tab==='Notes')body=`<textarea id="nt" placeholder="Add a private team note"></textarea><button class="pr" id="an">Add note</button>${l.notes.map((n,i)=>`<div class="note">${esc(n.b)}<br><small class="mut">You · ${n.t}</small> <button data-dn="${i}" style="float:right">Delete</button></div>`).join('')||'<p class="mut">No notes yet.</p>'}`;
+if(S.tab==='History')body=l.hist.slice().reverse().map(h=>`<div class="note">${esc(h.t)}<br><small class="mut">${h.w} · ${h.d||'demo'}</small></div>`).join('');
+return `<button id="back">← Back to list</button> <div style="display:flex;gap:10px;align-items:center;margin-top:8px"><span class="av" style="background:${COL[L.indexOf(l)%10]};width:44px;height:44px;font-size:18px">${esc(l.name[0])}</span><div><b style="font-size:16px">${esc(l.name)}</b> <span class="tag">${l.status}</span><span class="dm">DEMO</span><div class="mut">${l.type} · ${esc(l.area)}</div></div></div>
+<div class="cards" style="grid-template-columns:repeat(3,1fr);margin:12px 0 0"><div class="card"><span class="mut">Lead Score</span><div class="v" style="font-size:18px">${l.score}/100</div><small class="mut" title="Digital presence, fit, journey, info quality, verified demand">AI estimate</small></div><div class="card"><span class="mut">Confidence</span><div class="v" style="font-size:18px">${l.conf}%</div><small class="mut">evidence only</small></div><div class="card"><span class="mut">Est. Budget</span><div class="v" style="font-size:18px">${inr(l.budget)}</div><small class="mut">approx.</small></div></div>
+<div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${S.tab===t}" data-t="${t}">${t}</button>`).join('')}</div>${body}
+<div class="qa"><button class="pr" id="cw">Create Website Preview</button><button id="cc">Contact Customer</button><select id="mo" aria-label="More actions"><option value="">More…</option>${ST.map(s=>`<option value="s:${s}">Status → ${s}</option>`).join('')}<option value="rem">Add Reminder</option><option value="copy">Copy Public Details</option><option value="arch">Archive</option></select></div>`}
+function dash(){const by=ST.map(s=>[s,L.filter(l=>l.status===s).length]);const m=Math.max(1,...by.map(b=>b[1]));
+return `<h2>Dashboard</h2><p class="warn">Showing the DEMO dataset. Connect discovery in Settings to see live data.</p><div class="cards"><div class="card"><span class="mut">Saved leads</span><div class="v">${L.filter(l=>l.saved).length}</div></div><div class="card"><span class="mut">High priority</span><div class="v">${L.filter(l=>l.score>=75).length}</div></div><div class="card"><span class="mut">Follow-ups due</span><div class="v">${L.filter(l=>l.status==='Follow-up Due').length}</div></div></div>
+<div class="card"><b>Status distribution</b>${by.map(([s,n])=>`<div style="display:flex;gap:8px;align-items:center;margin:4px 0"><span style="width:110px">${s}</span><div style="background:var(--ac);height:10px;border-radius:5px;width:${n/m*100}%;min-width:${n?4:0}px"></div> ${n}</div>`).join('')}</div>
+<div class="card" style="margin-top:12px"><b>Recent activity</b>${L.flatMap(l=>l.hist.filter(h=>h.d).map(h=>`<div class="note">${esc(l.name)}: ${esc(h.t)}</div>`)).slice(-5).join('')||'<p class="mut">No activity yet.</p>'}</div><button class="pr" style="margin-top:12px" onclick="S.page='finder';render()">Go to Customer Finder</button>`}
+function leads(){const a=view();return `<h2>My Leads</h2><div class="card"><div class="tb"><input id="q" value="${esc(S.q)}" placeholder="Search leads"><select id="stf">${['All',...ST].map(s=>`<option ${S.st===s?'selected':''}>${s}</option>`).join('')}</select><select id="bs"><option value="">Bulk status…</option>${ST.map(s=>`<option>${s}</option>`).join('')}</select><button id="ba">Archive selected (${S.bulk.size})</button></div>${chips()}<div class="tw"><table><thead><tr><th></th><th>Business</th><th>Area</th><th>Category</th><th>Score</th><th>Estimate</th><th>Status</th><th>Owner</th><th>Next follow-up</th></tr></thead><tbody>${a.map(l=>`<tr><td><input type="checkbox" data-bk="${l.id}" ${S.bulk.has(l.id)?'checked':''} aria-label="Select ${esc(l.name)}"></td><td>${esc(l.name)}<span class="dm">DEMO</span></td><td>${esc(l.area)}</td><td>${l.type}</td><td>${sc(l.score)}</td><td>${inr(l.budget)}</td><td>${l.status}</td><td>Unassigned</td><td>—</td></tr>`).join('')||'<tr><td colspan="9">No leads.</td></tr>'}</tbody></table></div></div>`}
+function msgs(){return `<h2>Messages</h2><div class="card"><b>Composer</b><div class="tb"><select id="ml" aria-label="Lead">${L.map(l=>`<option value="${l.id}">${esc(l.name)}</option>`).join('')}</select><select id="mc"><option>Email</option><option>Phone/WhatsApp</option></select></div><textarea id="mb" placeholder="Hello, this is Flow Industries…"></textarea><p class="mut">Messages are never sent automatically. Demo records have no public contact, so external sending is unavailable.</p><button class="pr" id="sd">Save draft</button> <button id="sn">Mark as sent (user-confirmed)</button></div><div class="card" style="margin-top:12px"><b>Drafts and records</b>${S.msgs.map(m=>`<div class="note">${esc(m.b)}<br><small class="mut">${esc(m.l)} · ${m.c} · ${m.s}</small></div>`).join('')||'<p class="mut">No messages yet.</p>'}</div>`}
+function settings(){const cfg=[['Business discovery (Google Places API New)','PLACES_API_KEY'],['AI analysis (Gemini via server)','GEMINI_API_KEY'],['Firebase Authentication / Firestore','FIREBASE_* config']];
+return `<h2>Settings</h2><div class="card"><b>Appearance</b><div class="tb">${['light','dark','system'].map(p=>`<label style="flex-direction:row;gap:6px;align-items:center"><input type="radio" name="pf" value="${p}" ${S.pref===p?'checked':''}>${p[0].toUpperCase()+p.slice(1)}</label>`).join('')}</div></div>
+<div class="card" style="margin-top:12px"><b>Workspace</b><p class="mut">Currency INR · Timezone Asia/Kolkata · Default location ${esc($('#loc').value)}</p></div>
+<div class="card" style="margin-top:12px"><b>Integrations</b>${cfg.map(c=>`<div class="warn">${c[0]}: <b>Not configured</b><br><small>Requires server-side secret <code>${c[1]}</code>. Never put secrets in frontend code.</small></div>`).join('')}</div>
+<div class="card" style="margin-top:12px"><b>Data management</b><div class="tb"><button id="ex">Export leads (JSON)</button><button id="cd">Clear demo data</button></div><textarea id="exo" readonly hidden></textarea></div>`}
+function render(){nav();const c=$('#ct');c.innerHTML=({dashboard:dash,finder,leads,messages:msgs,settings})[S.page]();wire();$('#nc').textContent=1}
+function logh(l,t){l.hist.push({t,w:'You',d:new Date().toLocaleString('en-IN')})}
+function pick(id){S.sel=id;S.tab='Details';render();}
+function wire(){const c=$('#ct'),on=(s,e,f)=>{const n=c.querySelector(s);if(n)n[e]=f};
+on('#sort','onchange',e=>{S.sort=e.target.value;render()});on('#stf','onchange',e=>{S.st=e.target.value;S.pg=1;render()});
+on('#q','oninput',e=>{S.q=e.target.value;S.pg=1;const p=e.target.selectionStart;render();const n=$('#q');n.focus();n.setSelectionRange(p,p)});
+on('#vl','onclick',()=>{S.view='list';render()});on('#vg','onclick',()=>{S.view='grid';render()});
+on('#ps','onchange',e=>{S.ps=+e.target.value;S.pg=1;render()});on('#pv','onclick',()=>{S.pg--;render()});on('#nx','onclick',()=>{S.pg++;render()});
+on('#clr','onclick',()=>{S.st='All';S.f={minScore:0,maxBudget:0,web:''};render()});
+c.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{b.dataset.rm==='st'?S.st='All':S.f[b.dataset.rm]=b.dataset.rm==='web'?'':0;render()});
+c.querySelectorAll('[data-id]').forEach(r=>{r.onclick=()=>pick(r.dataset.id);r.onkeydown=e=>{if(e.key==='Enter')pick(r.dataset.id)}});
+c.querySelectorAll('[data-v]').forEach(b=>b.onclick=e=>{e.stopPropagation();pick(b.dataset.v)});
+on('#fm','onclick',()=>{const d=$('#dlg');d.innerHTML='<h3>Discovery not configured</h3><p>Find More Customers needs a server-side business-data provider (Google Places API New) and <code>PLACES_API_KEY</code>. No live search was made and no results were invented.</p><button onclick="this.closest(\'dialog\').close()">Close</button>';d.showModal()});
+on('#af','onclick',()=>{const d=$('#dlg');d.innerHTML=`<h3>Add filter</h3><p><label>Min score <input id="f1" type="number" min="0" max="100" value="${S.f.minScore}"></label></p><p><label>Max budget (₹) <input id="f2" type="number" min="0" value="${S.f.maxBudget}"></label></p><p><label>Website status <select id="f3"><option value="">Any</option><option>Not Found in Checked Source</option><option>Not Checked</option></select></label></p><button class="pr" id="fa">Apply</button> <button onclick="this.closest('dialog').close()">Cancel</button>`;d.showModal();$('#fa').onclick=()=>{S.f={minScore:+$('#f1').value||0,maxBudget:+$('#f2').value||0,web:$('#f3').value};S.pg=1;d.close();render()}});
+// detail
+on('#back','onclick',()=>{S.sel=null;render()});
+c.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render()});
+const l=L.find(x=>x.id===S.sel);
+if(l){on('#an','onclick',()=>{const v=$('#nt').value.trim();if(!v)return toast('Note is empty');l.notes.push({b:v,t:new Date().toLocaleString('en-IN')});logh(l,'Note added');render();toast('Note added')});
+c.querySelectorAll('[data-dn]').forEach(b=>b.onclick=()=>{if(confirm('Delete this note?')){l.notes.splice(+b.dataset.dn,1);logh(l,'Note deleted');render()}});
+on('#edit','onclick',()=>{const v=prompt('Corrected area (stored separately from source data)',l.area);if(v){l.corr.area=v;logh(l,'Area corrected to '+v);render()}});
+on('#mo','onchange',e=>{const v=e.target.value;if(v.startsWith('s:')){l.status=v.slice(2);logh(l,'Status changed to '+l.status);toast('Status updated')}else if(v==='arch'){if(confirm('Archive this lead?')){l.status='Archived';logh(l,'Archived')}}else if(v==='rem'){logh(l,'Reminder added (demo, no schedule)');toast('Reminder recorded')}else if(v==='copy'){toast('No public details to copy for demo record')}render()});
+on('#cw','onclick',()=>{const d=$('#dlg');d.innerHTML=`<h3>Website preview brief</h3><p class="mut">Editable. Nothing is published.</p><textarea id="pb">Business: ${l.name} (${l.type}, ${l.area})\nVerified facts: none (demo record)\nAssumptions (unverified): menu page, enquiry form, map link\nPackage idea: Business tier (confirm price)</textarea><button class="pr" onclick="toast('Brief saved to history');this.closest('dialog').close()">Save brief</button> <button onclick="this.closest('dialog').close()">Close</button>`;d.showModal();logh(l,'Preview brief created')});
+on('#cc','onclick',()=>{S.page='messages';render();$('#ml').value=l.id})}
+// leads / messages / settings
+c.querySelectorAll('[data-bk]').forEach(b=>b.onchange=()=>{b.checked?S.bulk.add(b.dataset.bk):S.bulk.delete(b.dataset.bk);render()});
+on('#bs','onchange',e=>{if(!e.target.value||!S.bulk.size)return;L.filter(x=>S.bulk.has(x.id)).forEach(x=>{x.status=e.target.value;logh(x,'Bulk status '+x.status)});toast('Updated '+S.bulk.size);S.bulk.clear();render()});
+on('#ba','onclick',()=>{if(S.bulk.size&&confirm('Archive selected leads?')){L.filter(x=>S.bulk.has(x.id)).forEach(x=>{x.status='Archived';logh(x,'Archived')});S.bulk.clear();render()}});
+const mk=s=>{const b=$('#mb').value.trim();if(!b)return toast('Write a message first');const id=$('#ml').value;S.msgs.push({b,s,c:$('#mc').value,l:L.find(x=>x.id===id).name});logh(L.find(x=>x.id===id),'Message '+s);toast('Recorded: '+s);render()};
+on('#sd','onclick',()=>mk('Draft'));on('#sn','onclick',()=>mk('Sent (user-confirmed)'));
+c.querySelectorAll('[name=pf]').forEach(r=>r.onchange=()=>setPref(r.value));
+on('#ex','onclick',()=>{const o=$('#exo');o.hidden=false;o.value=JSON.stringify(L,null,2);toast('Export shown below – copy it')});
+on('#cd','onclick',()=>{if(confirm('Clear all DEMO data?')){L=[];S.demo=false;S.sel=null;render()}})}
+$('#gs').oninput=()=>{if(S.page==='finder'||S.page==='leads'){S.q='';render()}};
+$('#menu').onclick=()=>$('#side').classList.toggle('open');
+$('#bell').onclick=()=>{const d=$('#dlg');d.innerHTML='<h3>Notifications</h3><p>Integration setup needed: discovery and AI providers are not configured.</p><button onclick="this.closest(\'dialog\').close()">Close</button>';d.showModal()};
+$('#prof').onclick=()=>{const d=$('#dlg');d.innerHTML='<h3>Flow Industries</h3><p class="mut">Workspace identity. Sign-in/out requires Firebase Authentication to be configured.</p><button onclick="this.closest(\'dialog\').close()">Close</button>';d.showModal()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.sel&&innerWidth<=1100&&!$('#dlg').open){S.sel=null;render()}});
+render();
+</script></body></html>

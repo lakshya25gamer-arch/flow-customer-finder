@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function wsId() { return get(/databases/$(db)/documents/users/$(request.auth.uid)).data.workspaceId; }
+    function member(w) { return request.auth != null && exists(/databases/$(db)/documents/users/$(request.auth.uid)) && wsId() == w; }
+    match /users/{u} { allow read: if request.auth.uid == u; allow write: if false; }
+    match /workspaces/{w} { allow read: if member(w); allow write: if false; }
+    match /{col}/{id} {
+      allow read: if col in ['leads','lead_notes','lead_analyses','message_records','activity_events','saved_searches','notifications'] && member(resource.data.workspaceId);
+      allow write: if false; // all writes go through the authenticated API
+    }
+    match /businesses/{id} { allow read: if request.auth != null; allow write: if false; }
+  }
+}

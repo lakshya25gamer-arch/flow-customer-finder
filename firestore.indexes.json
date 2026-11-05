@@ -1,0 +1,6 @@
+{"indexes":[
+{"collectionGroup":"leads","queryScope":"COLLECTION","fields":[{"fieldPath":"workspaceId","order":"ASCENDING"},{"fieldPath":"savedAt","order":"DESCENDING"}]},
+{"collectionGroup":"leads","queryScope":"COLLECTION","fields":[{"fieldPath":"workspaceId","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"},{"fieldPath":"savedAt","order":"DESCENDING"}]},
+{"collectionGroup":"lead_notes","queryScope":"COLLECTION","fields":[{"fieldPath":"leadId","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+{"collectionGroup":"lead_analyses","queryScope":"COLLECTION","fields":[{"fieldPath":"leadId","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]},
+{"collectionGroup":"activity_events","queryScope":"COLLECTION","fields":[{"fieldPath":"leadId","order":"ASCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]}],"fieldOverrides":[]}
